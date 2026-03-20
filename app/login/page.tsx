@@ -56,7 +56,6 @@ export default function LoginPage() {
     setProgressMessage("계정을 확인하고 이동 중입니다...");
 
     router.replace("/personal");
-    router.refresh();
   };
 
   return (
