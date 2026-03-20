@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 
+type Role = "parent" | "child";
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -32,6 +34,31 @@ export default function LoginPage() {
     return "로그인 중 오류가 발생했습니다. 다시 시도해주세요.";
   };
 
+  const getRedirectPathByRole = async (): Promise<string> => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      throw new Error("사용자 정보를 확인할 수 없습니다.");
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single<{ role: Role }>();
+
+    if (profileError || !profile?.role) {
+      throw new Error("프로필 정보를 확인할 수 없습니다.");
+    }
+
+    return profile.role === "parent"
+      ? "/personal/parent"
+      : "/personal/child";
+  };
+
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -53,9 +80,18 @@ export default function LoginPage() {
       return;
     }
 
-    setProgressMessage("계정을 확인하고 이동 중입니다...");
+    try {
+      setProgressMessage("계정을 확인하고 있어요...");
 
-    router.replace("/personal");
+      const redirectPath = await getRedirectPathByRole();
+
+      setProgressMessage("홈으로 이동 중이에요...");
+      router.replace(redirectPath);
+    } catch (error) {
+      console.error("로그인 후 이동 경로 확인 오류:", error);
+      setProgressMessage("기본 화면으로 이동 중이에요...");
+      router.replace("/personal");
+    }
   };
 
   return (
