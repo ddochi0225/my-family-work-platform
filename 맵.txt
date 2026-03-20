@@ -1,0 +1,100 @@
+/personal                  -> role 검사 후 리다이렉트
+/personal/parent           -> 부모 홈
+/personal/parent/children  -> 자녀 관리
+/personal/parent/schedule  -> 일정 관리
+/personal/parent/timetable -> 시간표 관리
+/personal/parent/todo      -> 할 일/보상 관리
+/personal/parent/allowance -> 포인트/용돈 관리
+
+/personal/child            -> 자녀 홈
+/personal/child/schedule   -> 내 일정
+/personal/child/timetable  -> 내 시간표
+/personal/child/todo       -> 내 할 일
+/personal/child/allowance  -> 내 포인트/용돈/지출
+/personal/child/profile    -> 내 정보
+
+
+app/
+  layout.tsx
+  page.tsx
+
+  personal/
+    page.tsx
+
+    parent/
+      layout.tsx
+      page.tsx
+      children/
+        page.tsx
+      schedule/
+        page.tsx
+      timetable/
+        page.tsx
+      todo/
+        page.tsx
+      allowance/
+        page.tsx
+      settings/
+        page.tsx
+
+    child/
+      layout.tsx
+      page.tsx
+      schedule/
+        page.tsx
+      timetable/
+        page.tsx
+      todo/
+        page.tsx
+      allowance/
+        page.tsx
+      profile/
+        page.tsx
+
+components/
+  parent/
+    ParentShell.tsx
+    ParentSidebar.tsx
+    ParentTopbar.tsx
+    ParentDashboard.tsx
+    ParentChildSelector.tsx
+
+  child/
+    ChildShell.tsx
+    ChildTopbar.tsx
+    ChildBottomNav.tsx
+    ChildDashboard.tsx
+    ChildPointCard.tsx
+    ChildTodayCard.tsx
+
+  shared/
+    LogoutButton.tsx
+    AuthGuard.tsx
+    PageHeader.tsx
+    EmptyState.tsx
+    LoadingSpinner.tsx
+    InfoCard.tsx
+
+lib/
+  auth/
+    getCurrentProfile.ts
+    requireAuth.ts
+    requireParent.ts
+    requireChild.ts
+    redirectByRole.ts
+
+  supabase/
+    client.ts
+    server.ts
+
+  queries/
+    parent.ts
+    child.ts
+
+types/
+  auth.ts
+  profile.ts
+  child.ts
+  schedule.ts
+  todo.ts
+  allowance.ts
